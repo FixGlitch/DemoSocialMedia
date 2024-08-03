@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User, Users, LoginData } from "../types/userTypes";
+import { User, Users } from "../types/userTypes";
 import {
   getUserById,
   createUser,

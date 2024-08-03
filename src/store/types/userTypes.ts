@@ -2,14 +2,12 @@ export interface User {
   user_id: string;
   full_name: string;
   password: string;
-  email: string;
-  token?: string;
+  token?: string
 }
 
 export interface UserPostData {
   full_name: string;
   password: string;
-  email: string;
 }
 
 export interface UsersState {
