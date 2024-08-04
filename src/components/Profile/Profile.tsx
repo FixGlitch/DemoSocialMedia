@@ -4,6 +4,8 @@ import AboutMe from "../AboutMe/AboutMe";
 import MyClassifieds from "../MyClassifieds/MyClassifieds";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
+import VariantOne from "../MyClassifieds/ClassifiedsVariants.tsx/VariantOne";
+import VariantTwo from "../MyClassifieds/ClassifiedsVariants.tsx/VariantTwo";
 
 const Profile = () => {
   const userDetail = useSelector((state: RootState) => state.user.userDetail);
@@ -114,6 +116,8 @@ const Profile = () => {
       </div>
       <AboutMe />
       <MyClassifieds />
+      <VariantOne />
+      <VariantTwo />
     </div>
   );
 };
