@@ -43,13 +43,13 @@ const VarianOne = () => {
                   USA, Philadelphia
                 </h2>
               </div>
-              <p className="text-black font-extralight mt-5">
+              <p className="text-gray700 font-extralight mt-5">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                 Adipisci odit delectus quas sed id officiis ipsa? Blanditiis eum
                 expedita qui ipsum aperiam, exercitationem impedit eaque
                 asperiores quo, natus aut ad?
               </p>
-              <p className="text-black font-extralight mt-5">
+              <p className="text-gray700 font-extralight mt-5">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                 Adipisci odit delectus quas sed id officiis ipsa? Blanditiis eum
                 expedita qui ipsum aperiam.
@@ -59,7 +59,7 @@ const VarianOne = () => {
           <div className="md:order-2 bg-white py-4 flex flex-col justify-between">
             <div>
               <h3 className="text-2xl font-semibold text-gray700 ml-2 px-4">
-                {userDetail?.full_name}Barbara Doe
+                {userDetail?.full_name}
               </h3>
               <svg
                 width="166"

@@ -2,13 +2,17 @@
 import Image from "next/image";
 import AboutMe from "../AboutMe/AboutMe";
 import MyClassifieds from "../MyClassifieds/MyClassifieds";
-import { RootState } from "@/store/store";
-import { useSelector } from "react-redux";
 import VariantOne from "../MyClassifieds/ClassifiedsVariants.tsx/VariantOne";
 import VariantTwo from "../MyClassifieds/ClassifiedsVariants.tsx/VariantTwo";
+import Loader from "../common/Loader/Loader";
+import { useUserData } from "@/store/services/useUserService";
 
 const Profile = () => {
-  const userDetail = useSelector((state: RootState) => state.user.userDetail);
+  const { userDetail, loading } = useUserData();
+
+  if (loading || !userDetail) {
+    return <Loader />;
+  }
 
   return (
     <div>
@@ -33,7 +37,7 @@ const Profile = () => {
           <div className="absolute xsm:top-[70%] xsm:left-[50%] md:left-[34%]  min-w-[80px] min-h-[80px] ">
             <div className="flex flex-col text-start">
               <h3 className="text-2xl font-semibold text-white ml-2">
-                {userDetail?.full_name}
+                {userDetail.full_name}
               </h3>
               <svg
                 width="166"

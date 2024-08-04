@@ -2,18 +2,15 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { ThunkDispatch } from "@reduxjs/toolkit";
-import { AnyAction } from "redux";
-import { RootState } from "@/store/store";
 import { loginUser } from "@/store/actions/userActions";
+import { useAppDispatch } from "@/store/reduxHook";
+
 interface SignInProps {
   onSuccess: () => void;
 }
 
 const SignIn = ({ onSuccess }: SignInProps) => {
-  const dispatch =
-    useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
+  const dispatch = useAppDispatch();
   const [full_name, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string>("");

@@ -53,7 +53,7 @@ const MyClassifieds = () => {
                   USA, Philadelphia
                 </h2>
               </div>
-              <p className="text-black font-extralight mt-5">
+              <p className="text-gray700 font-extralight mt-5">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                 Adipisci odit delectus quas sed id officiis ipsa? Blanditiis eum
                 expedita qui ipsum aperiam, exercitationem impedit eaque
@@ -64,7 +64,7 @@ const MyClassifieds = () => {
           <div className="md:order-2 bg-white py-4 flex flex-col justify-between">
             <div>
               <h3 className="text-2xl font-semibold text-gray700 ml-2 px-4">
-                {userDetail?.full_name}Barbara Doe
+                {userDetail?.full_name}
               </h3>
               <svg
                 width="166"
@@ -212,12 +212,23 @@ const MyClassifieds = () => {
                 objectFit="cover"
               />
             </div>
-            <p className="text-black font-extralight">
+            <div className=" flex flex-col">
+              <div className="flex flex-row items-center">
+                <h3 className="text-md font-bold text-gray700">
+                  John Doe
+                  <span className="mr-4" />
+                </h3>
+                <span className="text-sm font-medium mt-[1px] text-gray700 ">
+                  today 16:03
+                </span>
+              </div>
+              <p className="text-gray700 font-extralight">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                 Adipisci odit delectus quas sed id officiis ipsa? Blanditiis eum
                 expedita qui ipsum aperiam, exercitationem impedit eaque
                 asperiores quo, natus aut ad?
               </p>
+            </div>
             <button className="flex flex-col pl-4 mb-8 ml-4 rounded-sm text-md font-bold text-gray700">
               <svg
                 width="24"
