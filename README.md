@@ -48,3 +48,7 @@ Para levantar el proyecto en tu entorno local, sigue estos pasos:
 ## Diseño
 
 El diseño se basa en el concepto visual de User Profile.
+El primer día me concentré en construir el servidor.
+Durante los últimos dos días, entre el domingo y hoy, me enfoqué en implementar la funcionalidad y el diseño, utilizando Next.js, TypeScript, Redux Toolkit y Tailwind CSS.
+Añadí características como la edición de perfil, visualización de publicaciones y manejo seguro de tokens JWT para una experiencia de usuario completa y fluida.
+con mas tiempo de desarrollo , puedo llegar a realizar mas que solo maquetacion y funcionalidades basicas.
