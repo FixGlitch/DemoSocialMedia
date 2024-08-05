@@ -1,11 +1,29 @@
-import { useAppSelector } from "@/store/reduxHook";
+"use client"
+import { getUserById } from "@/store/actions/userActions";
+import { useAppDispatch, useAppSelector } from "@/store/reduxHook";
+import useUserId from "@/store/services/useUser";
 import { RootState } from "@/store/store";
 import Image from "next/image";
+import { useEffect } from "react";
+import Loader from "../common/Loader/Loader";
 
 const MyClassifieds = () => {
+  const dispatch = useAppDispatch();
+  const userId = useUserId();
   const userDetail = useAppSelector(
     (state: RootState) => state.user.userDetail
   );
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(getUserById(userId));
+    }
+  }, [dispatch, userId]);
+
+  if (!userDetail) {
+    return <Loader />;
+  }
+
   return (
     <div className="bg-gray200">
       <div className="max-w-screen mx-[5%] md:mx-[20%]">

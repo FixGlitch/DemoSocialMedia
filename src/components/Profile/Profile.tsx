@@ -8,19 +8,25 @@ import { useAppDispatch, useAppSelector } from "@/store/reduxHook";
 import { useEffect } from "react";
 import { getUserById } from "@/store/actions/userActions";
 import { RootState } from "@/store/store";
+import useUserId from "@/store/services/useUser";
+import Loader from "../common/Loader/Loader";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
+  const userId = useUserId();
   const userDetail = useAppSelector(
     (state: RootState) => state.user.userDetail
   );
-  const userId = localStorage.getItem("user_id");
 
   useEffect(() => {
     if (userId) {
       dispatch(getUserById(userId));
     }
   }, [dispatch, userId]);
+
+  if (!userDetail) {
+    return <Loader />;
+  }
 
   return (
     <div>
