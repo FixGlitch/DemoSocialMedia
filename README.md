@@ -45,6 +45,10 @@ Para levantar el proyecto en tu entorno local, sigue estos pasos:
 2. **NPM RUN DEV:**
    para levantar el proyecto en local
 
+3. **Variable de entorno**
+   recuerda renombrar el env.example a env.
+
+
 ## Diseño
 
 El diseño se basa en el concepto visual de User Profile.
