@@ -146,7 +146,7 @@ const MyClassifieds = () => {
         </div>
         <div className="grid md:grid-cols-4 items-center">
           <div className="bg-white p-4 flex items-center md:col-span-4">
-            <div className="relative w-15 h-15 mx-5">
+            <div className="relative w-20 h-15 mx-5">
               <Image
                 src={"/assets/AvatarDefault.png"}
                 alt="Avatar Public"
@@ -204,7 +204,7 @@ const MyClassifieds = () => {
         </div>
         <div className="grid md:grid-cols-4 items-center mt-4">
           <div className="bg-white p-4 flex items-center md:col-span-4">
-            <div className="relative w-15 h-15 mx-5">
+            <div className="relative w-20 h-15 mx-5">
               <Image
                 src={"/assets/JohnDoe.png"}
                 alt="Avatar Public"

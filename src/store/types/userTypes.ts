@@ -2,7 +2,7 @@ export interface User {
   user_id: string;
   full_name: string;
   password: string;
-  token?: string
+  token?: string;
 }
 
 export interface UserPostData {
@@ -10,10 +10,16 @@ export interface UserPostData {
   password: string;
 }
 
+export interface FetchError {
+  message: string;
+}
+
 export interface UsersState {
   users: User[];
+  userDetail: User | null;
   loading: boolean;
   error: string | null;
+  token: string | null;
 }
 
 export interface AuthState {
@@ -30,6 +36,15 @@ export interface RegisterData {
 export interface LoginData {
   full_name: string;
   password: string;
+}
+
+export interface LoginResponse {
+  token: string;
+  user: {
+    user_id: string;
+    full_name: string;
+    password: string;
+  };
 }
 
 export type Users = User[];

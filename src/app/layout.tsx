@@ -1,7 +1,6 @@
 "use client";
 
 import "./globals.css";
-
 import { useState, useEffect } from "react";
 import NavBar from "@/components/NavBar/NavBar";
 import Provider from "@/store/Provider";
@@ -19,14 +18,28 @@ export default function RootLayout({
   const [loading, setLoading] = useState<boolean>(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const router = useRouter();
-  const pathname = usePathname(); // Obtener la ruta actual
+  const pathname = usePathname();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-    }
-    setTimeout(() => setLoading(false), 1000);
+    const checkAuth = () => {
+      const token = localStorage.getItem("token");
+      const userData = localStorage.getItem("userData");
+
+      if (token && userData) {
+        try {
+          const user = JSON.parse(userData);
+          if (user.user_id) {
+            setIsLoggedIn(true);
+          }
+        } catch (error) {
+          console.error("Error parsing user data:", error);
+        }
+      }
+      
+      setLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   const handleLoginSuccess = () => {

@@ -1,39 +1,50 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User, Users } from "../types/userTypes";
 import {
+  getAllUsers,
   getUserById,
   createUser,
-  getAllUsers,
+  updateUser,
+  deleteUser,
   loginUser,
   registerUser,
   logoutUser,
 } from "../actions/userActions";
+import { LoginResponse, User, UsersState } from "../types/userTypes";
 
-interface UserState {
-  userDetail: User | null;
-  allUsers: Users;
-  loading: boolean;
-  error: string | null;
-  token: string | null;
-}
-
-const initialState: UserState = {
+const initialState: UsersState = {
+  users: [],
   userDetail: null,
-  allUsers: [],
   loading: false,
   error: null,
-  token:
-    typeof window !== "undefined"
-      ? localStorage.getItem("token") || null
-      : null,
+  token: localStorage.getItem("token") || null,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    clearError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
+      .addCase(getAllUsers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        getAllUsers.fulfilled,
+        (state, action: PayloadAction<User[]>) => {
+          state.loading = false;
+          state.users = action.payload;
+          state.error = null;
+        }
+      )
+      .addCase(getAllUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "An error occurred";
+      })
       .addCase(getUserById.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -45,8 +56,7 @@ const userSlice = createSlice({
       })
       .addCase(getUserById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message ?? "Error fetching user";
-        state.userDetail = null;
+        state.error = action.error.message || "An error occurred";
       })
       .addCase(createUser.pending, (state) => {
         state.loading = true;
@@ -54,41 +64,62 @@ const userSlice = createSlice({
       })
       .addCase(createUser.fulfilled, (state, action: PayloadAction<User>) => {
         state.loading = false;
-        state.userDetail = action.payload;
+        state.users.push(action.payload);
         state.error = null;
       })
       .addCase(createUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message ?? "Error creating user";
-        state.userDetail = null;
+        state.error = action.error.message || "An error occurred";
       })
-      .addCase(getAllUsers.pending, (state) => {
+      .addCase(updateUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getAllUsers.fulfilled, (state, action: PayloadAction<Users>) => {
+      .addCase(updateUser.fulfilled, (state, action: PayloadAction<User>) => {
         state.loading = false;
-        state.allUsers = action.payload;
+        const index = state.users.findIndex(
+          (user) => user.user_id === action.payload.user_id
+        );
+        if (index !== -1) {
+          state.users[index] = action.payload;
+        }
         state.error = null;
       })
-      .addCase(getAllUsers.rejected, (state, action) => {
+      .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message ?? "Error fetching all users";
-        state.allUsers = [];
+        state.error = action.error.message || "An error occurred";
+      })
+      .addCase(deleteUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = state.users.filter(
+          (user) => user.user_id !== action.meta.arg
+        );
+        state.error = null;
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.error.message || "An error occurred while removing user";
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<string>) => {
+      .addCase(loginUser.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
         state.loading = false;
-        state.token = action.payload;
+        state.token = action.payload.token;
+        state.userDetail = action.payload.user;
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
+        state.token = null;
         state.error =
-          (action.payload as string) || "An error occurred while logging in.";
+          action.payload?.message || "An error occurred while logging in.";
       })
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
@@ -104,8 +135,9 @@ const userSlice = createSlice({
       )
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
+        state.token = null;
         state.error =
-          (action.payload as string) || "An error occurred while registering.";
+          action.payload?.message || "An error occurred while registering.";
       })
       .addCase(logoutUser.pending, (state) => {
         state.loading = true;
@@ -114,13 +146,15 @@ const userSlice = createSlice({
       .addCase(logoutUser.fulfilled, (state) => {
         state.loading = false;
         state.token = null;
+        state.error = null;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
         state.error =
-          (action.payload as string) || "An error occurred while logging out.";
+          action.payload?.message || "An error occurred while logging out.";
       });
   },
 });
 
+export const { clearError } = userSlice.actions;
 export default userSlice.reducer;

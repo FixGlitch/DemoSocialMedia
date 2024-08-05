@@ -4,15 +4,23 @@ import AboutMe from "../AboutMe/AboutMe";
 import MyClassifieds from "../MyClassifieds/MyClassifieds";
 import VariantOne from "../MyClassifieds/ClassifiedsVariants.tsx/VariantOne";
 import VariantTwo from "../MyClassifieds/ClassifiedsVariants.tsx/VariantTwo";
-import Loader from "../common/Loader/Loader";
-import { useUserData } from "@/store/services/useUserService";
+import { useAppDispatch, useAppSelector } from "@/store/reduxHook";
+import { useEffect } from "react";
+import { getUserById } from "@/store/actions/userActions";
+import { RootState } from "@/store/store";
 
 const Profile = () => {
-  const { userDetail, loading } = useUserData();
+  const dispatch = useAppDispatch();
+  const userDetail = useAppSelector(
+    (state: RootState) => state.user.userDetail
+  );
+  const userId = localStorage.getItem("user_id");
 
-  if (loading || !userDetail) {
-    return <Loader />;
-  }
+  useEffect(() => {
+    if (userId) {
+      dispatch(getUserById(userId));
+    }
+  }, [dispatch, userId]);
 
   return (
     <div>
@@ -25,7 +33,7 @@ const Profile = () => {
             width={970}
             height={260}
           />
-          <div className="absolute w-32 h-32 md:w-60 md:h-60 bg-white/50 p-4 rounded-full overflow-hidden xsm:top-[62%] top-[55%] left-[20%] min-w-[80px] min-h-[80px]">
+          <div className="absolute w-32 h-32 md:w-32 md:h-32 lg:w-32 lg:h-32 xl:w-60 xl:h-60 2xl:w-60 2xl:h-60 xsm:top-[62%] top-[55%] left-[20%] md:top-[60%] md:left-[18%] lg:top-[60%] lg:left-[20%] xl:top-[55%] xl:left-[12%] 2xl:top-[55%] 2xl:left-[20%] bg-white/50 p-4 rounded-full overflow-hidden  ">
             <Image
               src={"/assets/AvatarDefault.png"}
               alt="profile"
@@ -37,7 +45,7 @@ const Profile = () => {
           <div className="absolute xsm:top-[70%] xsm:left-[50%] md:left-[34%]  min-w-[80px] min-h-[80px] ">
             <div className="flex flex-col text-start">
               <h3 className="text-2xl font-semibold text-white ml-2">
-                {userDetail.full_name}
+                {userDetail?.full_name}
               </h3>
               <svg
                 width="166"

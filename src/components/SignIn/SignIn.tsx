@@ -11,7 +11,7 @@ interface SignInProps {
 
 const SignIn = ({ onSuccess }: SignInProps) => {
   const dispatch = useAppDispatch();
-  const [full_name, setEmail] = useState("");
+  const [full_name, setFullName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string>("");
 
@@ -19,19 +19,20 @@ const SignIn = ({ onSuccess }: SignInProps) => {
     e.preventDefault();
     try {
       const action = await dispatch(loginUser({ full_name, password }));
-
+  
       if (loginUser.fulfilled.match(action)) {
-        const token = action.payload as string;
+        const { token, user } = action.payload;
         localStorage.setItem("token", token);
+        localStorage.setItem("userData", JSON.stringify(user));
         onSuccess();
       } else {
-        const errorMessage = action.payload as string;
-        setError(errorMessage || "Invalid username or password.");
+        setError("Invalid username or password.");
       }
-    } catch (error) {
+    } catch {
       setError("An error occurred while logging in.");
     }
   };
+  
 
   return (
     <div className="bg-white min-h-screen flex items-center justify-center px-4 md:px-8 py-8 md:py-12 lg:py-16 xl:py-20">
@@ -46,7 +47,7 @@ const SignIn = ({ onSuccess }: SignInProps) => {
               <input
                 type="full_name"
                 value={full_name}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setFullName(e.target.value)}
                 required
                 placeholder="Full Name"
                 className="w-full rounded-lg border text-black border-black placeholder-black py-4 pl-6 pr-10"

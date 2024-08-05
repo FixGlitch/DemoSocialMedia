@@ -21,8 +21,7 @@ const SignUp = () => {
       if (createUser.fulfilled.match(action)) {
         router.push("/");
       } else {
-        const errorMessage = action.payload as string;
-        setError(errorMessage || "Registration failed.");
+        setError("Invalid username or password.");
       }
     } catch (error) {
       setError("An error occurred while registering.");
