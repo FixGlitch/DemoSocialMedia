@@ -16,7 +16,10 @@ const initialState: UsersState = {
   userDetail: null,
   loading: false,
   error: null,
-  token: localStorage.getItem("token") || null,
+  token:
+    typeof window !== "undefined"
+      ? localStorage.getItem("token") || null
+      : null,
 };
 
 const userSlice = createSlice({

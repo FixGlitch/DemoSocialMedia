@@ -1,24 +1,14 @@
-"use client"
+"use client";
+
 import Loader from "@/components/common/Loader/Loader";
-import { getUserById } from "@/store/actions/userActions";
-import { useAppDispatch, useAppSelector } from "@/store/reduxHook";
-import useUserId from "@/store/services/useUser";
+import { useAppSelector } from "@/store/reduxHook";
 import { RootState } from "@/store/store";
 import Image from "next/image";
-import { useEffect } from "react";
 
 const VariantTwo = () => {
-  const dispatch = useAppDispatch();
-  const userId = useUserId();
   const userDetail = useAppSelector(
     (state: RootState) => state.user.userDetail
   );
-
-  useEffect(() => {
-    if (userId) {
-      dispatch(getUserById(userId));
-    }
-  }, [dispatch, userId]);
 
   if (!userDetail) {
     return <Loader />;

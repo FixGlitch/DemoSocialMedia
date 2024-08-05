@@ -1,7 +1,8 @@
 export interface User {
-  user_id: string;
+  user_id?: string;
   full_name: string;
-  password: string;
+  password?: string;
+  about: string;
   token?: string;
 }
 
@@ -44,6 +45,7 @@ export interface LoginResponse {
     user_id: string;
     full_name: string;
     password: string;
+    about: string;
   };
 }
 

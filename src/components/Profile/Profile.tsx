@@ -1,12 +1,11 @@
 "use client";
 import Image from "next/image";
-import AboutMe from "../AboutMe/AboutMe";
+import { useState, useEffect } from "react";
 import MyClassifieds from "../MyClassifieds/MyClassifieds";
 import VariantOne from "../MyClassifieds/ClassifiedsVariants.tsx/VariantOne";
 import VariantTwo from "../MyClassifieds/ClassifiedsVariants.tsx/VariantTwo";
 import { useAppDispatch, useAppSelector } from "@/store/reduxHook";
-import { useEffect } from "react";
-import { getUserById } from "@/store/actions/userActions";
+import { getUserById, updateUser } from "@/store/actions/userActions";
 import { RootState } from "@/store/store";
 import useUserId from "@/store/services/useUser";
 import Loader from "../common/Loader/Loader";
@@ -17,12 +16,38 @@ const Profile = () => {
   const userDetail = useAppSelector(
     (state: RootState) => state.user.userDetail
   );
+  const [isEditing, setIsEditing] = useState(false);
+  const [newName, setNewName] = useState(userDetail?.full_name || "");
+  const [newAbout, setNewAbout] = useState(userDetail?.about || "");
 
   useEffect(() => {
     if (userId) {
       dispatch(getUserById(userId));
     }
   }, [dispatch, userId]);
+
+  useEffect(() => {
+    if (userDetail) {
+      setNewName(userDetail.full_name);
+      setNewAbout(userDetail.about);
+    }
+  }, [userDetail]);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleSaveClick = () => {
+    if (userId) {
+      dispatch(
+        updateUser({
+          userId,
+          userData: { ...userDetail, full_name: newName, about: newAbout },
+        })
+      );
+      setIsEditing(false);
+    }
+  };
 
   if (!userDetail) {
     return <Loader />;
@@ -48,10 +73,19 @@ const Profile = () => {
               height={300}
             />
           </div>
-          <div className="absolute xsm:top-[70%] xsm:left-[50%] md:left-[34%]  min-w-[80px] min-h-[80px] ">
+          <div className="absolute xsm:top-[70%] xsm:left-[50%] md:left-[34%] min-w-[80px] min-h-[80px] ">
             <div className="flex flex-col text-start">
               <h3 className="text-2xl font-semibold text-white ml-2">
-                {userDetail?.full_name}
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    className="bg-white text-black rounded-md px-2 py-1"
+                  />
+                ) : (
+                  userDetail.full_name
+                )}
               </h3>
               <svg
                 width="166"
@@ -97,9 +131,12 @@ const Profile = () => {
         </div>
         <div className="flex flex-col items-center px-4 pb-6 lg:pb-8 xl:pb-11.5 mt-8">
           <div className="flex flex-wrap justify-center gap-4">
-            <button className="flex border-2 items-center justify-center rounded-md border-gray300 w-full lg:w-auto py-2 px-8">
+            <button
+              onClick={isEditing ? handleSaveClick : handleEditClick}
+              className="flex border-2 items-center justify-center rounded-md border-gray300 w-full lg:w-auto py-2 px-8"
+            >
               <span className="font-bold text-sm text-gray700">
-                Edit Profile
+                {isEditing ? "Save" : "Edit Profile"}
               </span>
             </button>
             <div className="flex flex-col items-center gap-1 px-4">
@@ -132,7 +169,61 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <AboutMe />
+      <div className="bg-gray100">
+        <div className="max-w-screen mx-[5%] md:mx-[20%] bg-gray100">
+          <div className="grid md:grid-cols-2 gap-4 items-stretch py-10">
+            <div className="md:order-1 bg-white p-4 flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between border-b-2 border-gray100 pb-2">
+                  <h4 className="font-medium text-title-sm text-start text-gray">
+                    ABOUT ME
+                  </h4>
+                  <span className="font-normal text-md text-gray">Model</span>
+                </div>
+                {isEditing ? (
+                  <textarea
+                    value={newAbout}
+                    onChange={(e) => setNewAbout(e.target.value)}
+                    className="bg-white w-full border-2 border-gray text-gray rounded-md px-2 py-1"
+                  />
+                ) : (
+                  <p className="text-gray font-extralight mt-4">
+                    {userDetail?.about}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="md:order-2 bg-white p-4 flex flex-col justify-between">
+              <div className="flex justify-between border-b-2 border-gray100 pb-2">
+                <h4 className="font-medium text-title-sm text-start text-gray">
+                  CONTACTS
+                </h4>
+                <Image
+                  src={"/assets/social-media.png"}
+                  alt="Social Media Icons"
+                  width={150}
+                  height={50}
+                />
+              </div>
+              <div className="mt-4 relative w-full h-56">
+                <Image
+                  src={"/assets/map.png"}
+                  alt="Map"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
+            </div>
+            <div className="md:col-span-2 md:order-3 flex justify-center mt-1">
+              <button className="flex border-2 items-center justify-center border-gray300 w-full py-4 px-4">
+                <span className="font-bold text-sm text-gray700">
+                  Show more information...
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <MyClassifieds />
       <VariantOne />
       <VariantTwo />

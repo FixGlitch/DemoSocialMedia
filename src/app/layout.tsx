@@ -9,6 +9,7 @@ import Loader from "@/components/common/Loader/Loader";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import SignUp from "@/components/SignUp/SignUp";
+import Footer from "@/components/Footer/Footer";
 
 export default function RootLayout({
   children,
@@ -60,6 +61,7 @@ export default function RootLayout({
             <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
               <NavBar />
               {children}
+              <Footer/>
             </div>
           </div>
         );

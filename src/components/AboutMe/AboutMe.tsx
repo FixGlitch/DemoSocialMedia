@@ -13,12 +13,17 @@ const AboutMe = () => {
                 </h4>
                 <span className="font-normal text-md text-gray">Model</span>
               </div>
-              <p className="text-black font-extralight mt-4">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Adipisci odit delectus quas sed id officiis ipsa? Blanditiis eum
-                expedita qui ipsum aperiam, exercitationem impedit eaque
-                asperiores quo, natus aut ad?
-              </p>
+              {isEditing ? (
+      <textarea
+        value={newAbout}
+        onChange={(e) => setNewAbout(e.target.value)}
+        className="bg-white text-black rounded-md px-2 py-1"
+      />
+    ) : (
+      <p className="text-black font-extralight mt-4">
+        {userDetail?.about}
+      </p>
+    )}
             </div>
           </div>
           <div className="md:order-2 bg-white p-4 flex flex-col justify-between">
